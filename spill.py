@@ -15,6 +15,62 @@ screen = pygame.display.set_mode((width * 1.20, height))
 
 SpeedDefault = display_info.current_w * 0.02
 DiagonalSpeedDefault = SpeedDefault / 4
+speed = SpeedDefault / 2
+Yspeed = speed - speed
+
+#Ball object
+class circle(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load('circle.png').convert_alpha()
+        self.rect = self.image.get_rect()
+        self.Rheight = self.image.get_height()
+        self.Rwidth = self.image.get_width()
+        self.rect.center = ((width * 1.20) // 2, height // 2)
+    def update(self):
+        global speed
+        global Yspeed
+        self.rect.x += speed
+        self.rect.y += Yspeed
+
+
+        collisions = pygame.sprite.spritecollide(self, players, False)
+        if collisions:
+            choice_Yspeed = random.randrange(3)
+           
+            if speed > 0:
+                speed += -2 * (speed * 1.000)
+            elif speed < 0:
+                speed -= 2 * (speed * 1.000)
+
+
+            if choice_Yspeed == 0:
+                Yspeed = speed - speed
+            
+            elif choice_Yspeed == 1:
+                Yspeed = speed
+
+            elif choice_Yspeed == 2:
+                Yspeed = -1*speed
+
+            self.Rheight - 1
+            self.Rwidth - 1
+        
+        
+        if self.rect.y < 0:
+            Yspeed = -1*Yspeed
+        elif self.rect.y > height - self.Rheight:
+            Yspeed = -Yspeed
+
+
+        if self.rect.x > (width * 1.20) or self.rect.x < (-width * 1.20):
+            self.rect.x = width / 2
+        
+
+
+        
+        #collisions = pygame.sprite.spritecollide(self, players, False)
+
 
 class rectangle1(pygame.sprite.Sprite):
     def __init__(self):
@@ -55,22 +111,8 @@ class rectangle2(pygame.sprite.Sprite):
         pass
 
 
-#Ball object
-class circle(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.image.load('circle.png').convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.center = ((width * 1.20), height // 2)
-    def update(self):
-        collisions = pygame.sprite.spritecollide(self, players, False)
-        if collisions:
-            print("colision")
-        elif collisions == False:
-            print("no colisison")
-        else:
-            print("shit don wok")
-        pass
+
+
 
 
 all_sprites = pygame.sprite.Group()
