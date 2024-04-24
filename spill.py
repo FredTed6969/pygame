@@ -1,5 +1,6 @@
 import pygame
 from pygame.sprite import Group
+import random as random
 
 
 pygame.init()
@@ -60,18 +61,27 @@ class circle(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load('circle.png').convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.center = ((width // 2) * 1.20, height // 2)
+        self.rect.center = ((width * 1.20), height // 2)
     def update(self):
-        
+        collisions = pygame.sprite.spritecollide(self, players, False)
+        if collisions:
+            print("colision")
+        elif collisions == False:
+            print("no colisison")
+        else:
+            print("shit don wok")
         pass
 
-all_sprites = pygame.sprite.Group()
 
+all_sprites = pygame.sprite.Group()
+players = pygame.sprite.Group()
 P1 = rectangle1()
 P2 = rectangle2()
 Ball = circle()
 
 all_sprites.add(Ball, P1, P2)
+players.add(P1, P2)
+
 
 running = True
 while running:
@@ -83,6 +93,7 @@ while running:
 
     # Clear the screen
     screen.fill("white")
+
 
     # Update all sprites
     all_sprites.update()
