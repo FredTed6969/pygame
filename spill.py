@@ -15,7 +15,7 @@ screen = pygame.display.set_mode((width * 1.20, height))
 SpeedDefault = display_info.current_w * 0.02
 DiagonalSpeedDefault = SpeedDefault / 4
 
-class rectangle(pygame.sprite.Sprite):
+class rectangle1(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load('rectangle.png').convert_alpha()
@@ -24,7 +24,6 @@ class rectangle(pygame.sprite.Sprite):
         self.rect.center = (width *1.20, height // 2)
     def update(self):
         keys = pygame.key.get_pressed()
-        print(self.rect.y) 
         if keys[pygame.K_UP]:
             self.rect.y -= SpeedDefault
         if keys[pygame.K_DOWN]:
@@ -33,11 +32,26 @@ class rectangle(pygame.sprite.Sprite):
             self.rect.y = 0
         elif self.rect.y > height - self.Rheight:  # Lower bound
             self.rect.y = height - self.Rheight
+        pass
 
-
-
-
-
+class rectangle2(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load('rectangle.png').convert_alpha()
+        self.Rheight = self.image.get_height()
+        self.rect = self.image.get_rect()
+        self.rect.center = (0, height // 2)
+    def update(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w]:
+            self.rect.y -= SpeedDefault
+        if keys[pygame.K_s]:
+            self.rect.y += SpeedDefault
+        if self.rect.y < 0:  # Upper bound
+            self.rect.y = 0
+        elif self.rect.y > height - self.Rheight:  # Lower bound
+            self.rect.y = height - self.Rheight
+        pass
 
 
 #Ball object
@@ -48,43 +62,16 @@ class circle(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = ((width // 2) * 1.20, height // 2)
     def update(self):
-        #catches key presses
-        keys = pygame.key.get_pressed()
-
-        #diagonals
-        if keys[pygame.K_UP] and keys[pygame.K_LEFT]:
-            self.rect.y -= DiagonalSpeedDefault
-            self.rect.x -= DiagonalSpeedDefault
-        if keys[pygame.K_UP] and keys[pygame.K_RIGHT]:
-            self.rect.y -= DiagonalSpeedDefault
-            self.rect.x += DiagonalSpeedDefault
-
-        if keys[pygame.K_DOWN] and keys[pygame.K_LEFT]:
-            self.rect.y += DiagonalSpeedDefault
-            self.rect.x -= DiagonalSpeedDefault
-        if keys[pygame.K_DOWN] and keys[pygame.K_RIGHT]:
-            self.rect.y += DiagonalSpeedDefault
-            self.rect.x += DiagonalSpeedDefault
-
-        #directionals
-        if keys[pygame.K_UP]:
-            self.rect.y -= SpeedDefault
-        if keys[pygame.K_DOWN]:
-            self.rect.y += SpeedDefault
-        if keys[pygame.K_LEFT]:
-            self.rect.x -= SpeedDefault
-        if keys[pygame.K_RIGHT]:
-            self.rect.x += SpeedDefault
-        if keys[pygame.K_e]:
-            self.rect.center = (width // 2, height // 2)   
+        
         pass
 
 all_sprites = pygame.sprite.Group()
 
-P1 = rectangle()
+P1 = rectangle1()
+P2 = rectangle2()
 Ball = circle()
 
-all_sprites.add(Ball, P1)
+all_sprites.add(Ball, P1, P2)
 
 running = True
 while running:
