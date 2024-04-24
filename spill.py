@@ -15,13 +15,38 @@ screen = pygame.display.set_mode((width * 1.20, height))
 SpeedDefault = display_info.current_w * 0.02
 DiagonalSpeedDefault = SpeedDefault / 4
 
-#circle object
+class rectangle(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load('rectangle.png').convert_alpha()
+        self.Rheight = self.image.get_height()
+        self.rect = self.image.get_rect()
+        self.rect.center = (width *1.20, height // 2)
+    def update(self):
+        keys = pygame.key.get_pressed()
+        print(self.rect.y) 
+        if keys[pygame.K_UP]:
+            self.rect.y -= SpeedDefault
+        if keys[pygame.K_DOWN]:
+            self.rect.y += SpeedDefault
+        if self.rect.y < 0:  # Upper bound
+            self.rect.y = 0
+        elif self.rect.y > height - self.Rheight:  # Lower bound
+            self.rect.y = height - self.Rheight
+
+
+
+
+
+
+
+#Ball object
 class circle(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load('circle.png').convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.center = (width // 2, height // 2)
+        self.rect.center = ((width // 2) * 1.20, height // 2)
     def update(self):
         #catches key presses
         keys = pygame.key.get_pressed()
@@ -56,9 +81,10 @@ class circle(pygame.sprite.Sprite):
 
 all_sprites = pygame.sprite.Group()
 
-my_sprite = circle()
+P1 = rectangle()
+Ball = circle()
 
-all_sprites.add(my_sprite)
+all_sprites.add(Ball, P1)
 
 running = True
 while running:
